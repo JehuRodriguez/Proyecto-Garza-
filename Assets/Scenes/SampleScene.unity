@@ -651,11 +651,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnables:
   - prefab: {fileID: 7103863683290523954, guid: 48c2603764b35524ba6e05a30ade529c, type: 3}
-    weight: 0
+    weight: 2
   - prefab: {fileID: 4254463133144150094, guid: 6d9448999730de84cb83e7a13cfde4d6, type: 3}
-    weight: 0
+    weight: 3
   - prefab: {fileID: 7103863683290523954, guid: 48c2603764b35524ba6e05a30ade529c, type: 3}
-    weight: 0
+    weight: 2
   spawnPoints:
   - {fileID: 1152672095}
   - {fileID: 1029590219}
