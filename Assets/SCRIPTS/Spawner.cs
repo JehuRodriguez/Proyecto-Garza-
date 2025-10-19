@@ -79,7 +79,10 @@ public class Spawner : MonoBehaviour
         }
     }
 
-
+    public void StopSpawning()
+    {
+        running = false;
+    }
 
 
 }
