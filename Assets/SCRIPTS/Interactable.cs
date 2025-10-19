@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EntityType { Enemy, Ally }
+
 public class Interactable : MonoBehaviour
 {
+    [Header("Tipo de entidad")]
+    public EntityType entityType = EntityType.Enemy;
+
+
     [Header("Configuración de la entidad")]
     public bool isEnemy = true;
     public float damageOnReach = -10f;
@@ -13,6 +19,10 @@ public class Interactable : MonoBehaviour
     [Header("Referencias")]
     public Transform targetPoint;
     public PlayerCamuflaje playerCamo;
+
+    [Header("Valores para la barra de jugador")]
+    public float playerGainOnEnemy = 10f;
+    public float playerLossOnAlly = 15f;
 
     private bool reached = false;
 
@@ -29,13 +39,16 @@ public class Interactable : MonoBehaviour
 
     void OnReachedTarget()
     {
-        if (isEnemy)
+        if (entityType == EntityType.Enemy)
         {
-            GameManager.Instance.ChangeHealth(damageOnReach);
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(damageOnReach);
+            Debug.Log($"{name} llegó al target como ENEMY -> daño {damageOnReach}");
             Destroy(gameObject);
         }
         else
         {
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(rewardOnTap);
+            Debug.Log($"{name} llegó al target como ALLY -> reward {rewardOnTap}");
             Destroy(gameObject);
         }
     }
@@ -48,15 +61,22 @@ public class Interactable : MonoBehaviour
 
     public void OnTapped(bool duringCamouflage)
     {
-        if (isEnemy)
+        if (entityType == EntityType.Enemy)
         {
             float reward = rewardOnTap * (duringCamouflage ? 2f : 1f);
-            GameManager.Instance.ChangeHealth(reward);
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(reward);
+            Debug.Log($"{name} OnTapped ENEMY, camo={duringCamouflage}, reward={reward}");
+
+            if (PlayerLifeUI.Instance != null)
+                PlayerLifeUI.Instance.AddLife(playerGainOnEnemy);
             Destroy(gameObject);
         }
         else
         {
-            GameManager.Instance.ChangeHealth(-10f);
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(-10f);
+            Debug.Log($"{name} OnTapped ALLY -> penaliza al ecosistema");
+
+            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.RemoveLife(playerLossOnAlly);
             Destroy(gameObject);
         }
     }
@@ -64,16 +84,20 @@ public class Interactable : MonoBehaviour
     public void OnTappedAtArrival()
     {
 
-        if (isEnemy)
+        if (entityType == EntityType.Enemy)
         {
-            float reward = rewardOnTap;
-            GameManager.Instance.ChangeHealth(reward);
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(rewardOnTap);
+            Debug.Log($"{name} OnTappedAtArrival ENEMY -> reward {rewardOnTap}");
+
+            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.AddLife(playerGainOnEnemy);
             Destroy(gameObject);
         }
         else
         {
-            GameManager.Instance.ChangeHealth(-10f);
-            Destroy(gameObject);
+            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(-10f);
+            Debug.Log($"{name} OnTappedAtArrival ALLY -> penaliza");
+            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.RemoveLife(playerLossOnAlly);
+            Destroy(gameObject); 
         }
     }
 
