@@ -1382,7 +1382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7b23399d2bd7c43a3ed7b732f20796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlayerLife: 100
+  maxPlayerLife: 200
   startLife: 0
   lifeSlider: {fileID: 1392457965}
   lifeText: {fileID: 373746362}
