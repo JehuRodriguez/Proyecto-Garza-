@@ -1,105 +1,123 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EntityType { Enemy, Ally }
+
+public enum EntityType
+{
+    Enemy,
+    Ally,
+    Neutral
+}
 
 public class Interactable : MonoBehaviour
 {
     [Header("Tipo de entidad")]
     public EntityType entityType = EntityType.Enemy;
 
+    [Header("Movimiento y llegada")]
+    public float moveSpeed = 1.2f;         
+    public float interactionRange = 1.2f;  
+    public float reachThreshold = 0.12f;
 
-    [Header("Configuración de la entidad")]
-    public bool isEnemy = true;
-    public float damageOnReach = -10f;
-    public float rewardOnTap = 5f;
-    public float speed = 0.5f;
+    [Header("Efectos al llegar al objetivo (opcional)")]
+    public float damageOnReach = -10f;     
+    public float rewardOnReach = 5f;
 
-    [Header("Referencias")]
-    public Transform targetPoint;
-    public PlayerCamuflaje playerCamo;
+    [HideInInspector] public Transform targetPoint;
+    [HideInInspector] public PlayerCamuflaje playerCamo;
 
-    [Header("Valores para la barra de jugador")]
-    public float playerGainOnEnemy = 10f;
-    public float playerLossOnAlly = 15f;
+    [Header("Efecto al ser tocado por el jugador")]
+    public float playerLifeChange = 10f;   
 
-    private bool reached = false;
+     bool interacted = false;
+    bool reachedTarget = false;
+    Transform player;
 
-    private void Update()
+    void Start()
     {
-        if (targetPoint == null) return;
-        transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
-        if (!reached && Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        if (p != null) player = p.transform;
+        else player = null;
+    }
+
+    void Update()
+    {
+        if (player == null)
         {
-            reached = true;
-            OnReachedTarget();
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p.transform;
         }
+
+        if (interacted) return;
+
+        if (targetPoint != null && !reachedTarget)
+        {
+            Vector3 newPos = Vector3.MoveTowards(transform.position, targetPoint.position, moveSpeed * Time.deltaTime);
+            transform.position = newPos;
+
+            float distToTarget = Vector2.Distance(transform.position, targetPoint.position);
+            if (distToTarget <= reachThreshold)
+            {
+                reachedTarget = true;
+                OnReachedTarget();
+                return;
+            }
+        }
+
+        if (player != null)
+        {
+            float distToPlayer = Vector2.Distance(player.position, transform.position);
+            if (!interacted && distToPlayer <= interactionRange)
+            {
+                interacted = true;
+                bool camo = (playerCamo != null && playerCamo.IsCamouflaged);
+                OnTapped(camo); 
+            }
+        }
+    }
+
+    public void OnTapped(bool isCamouflaged = false)
+    {
+        float multiplier = (entityType == EntityType.Enemy && isCamouflaged) ? 2f : 1f;
+
+        if (entityType == EntityType.Enemy)
+        {
+            float add = playerLifeChange * multiplier;
+            PlayerLifeUI.Instance?.AddLife(add);
+            Debug.Log($"{name}: interceptado ENEMY -> +{add} vida al jugador");
+        }
+
+        else if (entityType == EntityType.Ally)
+        {
+            PlayerLifeUI.Instance?.RemoveLife(playerLifeChange);
+            Debug.Log($"{name}: interceptado ALLY -> -{playerLifeChange} vida al jugador");
+        }
+        else
+        {
+            Debug.Log($"{name}: interceptado NEUTRAL (sin efecto de vida)");
+        }
+
+        Destroy(gameObject);
+
     }
 
     void OnReachedTarget()
     {
-        if (entityType == EntityType.Enemy)
+       
+        if (GameManager.Instance != null)
         {
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(damageOnReach);
-            Debug.Log($"{name} llegó al target como ENEMY -> daño {damageOnReach}");
-            Destroy(gameObject);
+            if (entityType == EntityType.Enemy)
+            {
+                GameManager.Instance.ChangeHealth(damageOnReach);
+                Debug.Log($"{name} llegÃ³ al refugio: ENEMY daÃ±Ã³ ecosistema {damageOnReach}");
+            }
+            else if (entityType == EntityType.Ally)
+            {
+                GameManager.Instance.ChangeHealth(rewardOnReach);
+                Debug.Log($"{name} llegÃ³ al refugio: ALLY beneficiÃ³ ecosistema {rewardOnReach}");
+            }
         }
-        else
-        {
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(rewardOnTap);
-            Debug.Log($"{name} llegó al target como ALLY -> reward {rewardOnTap}");
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
-
-    public void HandleTapFromInput()
-    {
-        bool camo = (playerCamo != null && playerCamo.IsCamouflaged);
-        OnTapped(camo);
-    }
-
-    public void OnTapped(bool duringCamouflage)
-    {
-        if (entityType == EntityType.Enemy)
-        {
-            float reward = rewardOnTap * (duringCamouflage ? 2f : 1f);
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(reward);
-            Debug.Log($"{name} OnTapped ENEMY, camo={duringCamouflage}, reward={reward}");
-
-            if (PlayerLifeUI.Instance != null)
-                PlayerLifeUI.Instance.AddLife(playerGainOnEnemy);
-            Destroy(gameObject);
-        }
-        else
-        {
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(-10f);
-            Debug.Log($"{name} OnTapped ALLY -> penaliza al ecosistema");
-
-            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.RemoveLife(playerLossOnAlly);
-            Destroy(gameObject);
-        }
-    }
-
-    public void OnTappedAtArrival()
-    {
-
-        if (entityType == EntityType.Enemy)
-        {
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(rewardOnTap);
-            Debug.Log($"{name} OnTappedAtArrival ENEMY -> reward {rewardOnTap}");
-
-            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.AddLife(playerGainOnEnemy);
-            Destroy(gameObject);
-        }
-        else
-        {
-            if (GameManager.Instance != null) GameManager.Instance.ChangeHealth(-10f);
-            Debug.Log($"{name} OnTappedAtArrival ALLY -> penaliza");
-            if (PlayerLifeUI.Instance != null) PlayerLifeUI.Instance.RemoveLife(playerLossOnAlly);
-            Destroy(gameObject); 
-        }
-    }
-
-
 }

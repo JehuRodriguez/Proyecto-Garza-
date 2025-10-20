@@ -51,9 +51,12 @@ public class PlayerLifeUI : MonoBehaviour
         currentLife = Mathf.Clamp(currentLife + amount, 0f, maxPlayerLife);
         UpdateUIImmediate();
 
+        Debug.Log($"PlayerLifeUI: AddLife({amount}) -> currentLife={currentLife}");
+
         if (Mathf.Approximately(currentLife, maxPlayerLife) || currentLife >= maxPlayerLife)
         {
-            Debug.Log("GANASTE");
+            Debug.Log("PlayerLifeUI: GANASTE -> llamando a GameManager.TriggerVictory()");
+            if (GameManager.Instance != null) GameManager.Instance.TriggerVictory();
         }
     }
 
@@ -62,6 +65,8 @@ public class PlayerLifeUI : MonoBehaviour
         if (amount <= 0) return;
         currentLife = Mathf.Clamp(currentLife - amount, 0f, maxPlayerLife);
         UpdateUIImmediate();
+
+        Debug.Log($"PlayerLifeUI: RemoveLife({amount}) -> currentLife={currentLife}");
     }
 
     public void SetLife(float value)
@@ -69,5 +74,6 @@ public class PlayerLifeUI : MonoBehaviour
         currentLife = Mathf.Clamp(value, 0f, maxPlayerLife);
         UpdateUIImmediate();
     }
+    public float GetCurrentLife() { return currentLife; }
 
 }

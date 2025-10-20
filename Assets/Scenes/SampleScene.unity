@@ -455,28 +455,14 @@ GameObject:
   - component: {fileID: 406996654}
   - component: {fileID: 406996653}
   - component: {fileID: 406996651}
-  - component: {fileID: 406996650}
+  - component: {fileID: 406996656}
   m_Layer: 0
   m_Name: Garza
-  m_TagString: Enemy
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &406996650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406996649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efec7251601768045b2b3aff0598ef75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 4
-  stoppingDistance: 0.15
 --- !u!114 &406996651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,6 +617,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &406996656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406996649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efec7251601768045b2b3aff0598ef75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 4
+  stoppingDistance: 0.15
+  targetInteractable: {fileID: 0}
+  playerCamo: {fileID: 406996651}
 --- !u!1 &421496433
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 519420031}
   playerCamo: {fileID: 406996651}
-  playerMover: {fileID: 406996650}
+  playerMover: {fileID: 406996656}
   tapRadius: 0.6
 --- !u!4 &559614216
 Transform:
@@ -1311,6 +1313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTime: 90
   timerText: {fileID: 1159319377}
+  spawner: {fileID: 1749183765}
 --- !u!4 &1273173520
 Transform:
   m_ObjectHideFlags: 0
@@ -1379,7 +1382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7b23399d2bd7c43a3ed7b732f20796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlayerLife: 200
+  maxPlayerLife: 100
   startLife: 0
   lifeSlider: {fileID: 1392457965}
   lifeText: {fileID: 373746362}
