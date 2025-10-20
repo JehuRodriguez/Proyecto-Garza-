@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     public Action OnDefeat;
     public Action OnVictory;
 
-    private bool finished = false;
+    
 
     private void Awake()
     {
@@ -30,40 +31,27 @@ public class GameManager : MonoBehaviour
 
     public void TriggerVictory()
     {
-        if (finished) return;
-        finished = true;
-        Debug.Log("GameManager: VICTORIA");
-
+        Debug.Log("GameManager: VICTORIA triggered");
         
-        Spawner s = FindObjectOfType<Spawner>();
-        if (s != null) s.StopSpawning();
+        if (PlayerLifeUI.Instance != null)
+        {
+            float life = PlayerLifeUI.Instance.GetCurrentLife();
+            PlayerPrefs.SetFloat("LastPlayerLife", life);
+            PlayerPrefs.Save();
+        }
 
-       
-        Time.timeScale = 0f;
-
-        
         OnVictory?.Invoke();
+       
+        SceneManager.LoadScene("Victory");
     }
 
 
     public void TriggerDefeat()
     {
-        if (finished) return;
-        finished = true;
-        Debug.Log("GameManager: DERROTA");
-
-        Spawner s = FindObjectOfType<Spawner>();
-        if (s != null) s.StopSpawning();
-
-        Time.timeScale = 0f;
-
+        Debug.Log("GameManager: ¡Derrota activada!");
         OnDefeat?.Invoke();
     }
 
-    public void ResetGame()
-    {
-        finished = false;
-        Time.timeScale = 1f;
-    }
+   
 }
 
