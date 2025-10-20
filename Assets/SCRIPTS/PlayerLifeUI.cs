@@ -9,7 +9,7 @@ public class PlayerLifeUI : MonoBehaviour
     public static PlayerLifeUI Instance;
 
     [Header("Configuración de vida")]
-    public float maxPlayerLife = 100f;
+    public float maxPlayerLife = 300f;
     [Tooltip("Valor inicial de vida (0..maxPlayerLife). Si quieres empezar vacía, pon 0.")]
     public float startLife = 0f;
 

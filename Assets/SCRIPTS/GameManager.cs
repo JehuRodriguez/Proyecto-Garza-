@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
         OnVictory?.Invoke();
        
-        SceneManager.LoadScene("Victory");
+        SceneManager.LoadScene("VICTORIA");
     }
 
 
