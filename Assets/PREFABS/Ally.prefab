@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemy: 1
   scoreValue: 1
-  hitEffectPrefab: {fileID: 4987401800542416027, guid: c83112ac2c5a683498b184d1ea3dedef, type: 3}
+  hitEffectPrefab: {fileID: 0}
   hitSfx: {fileID: 0}
 --- !u!70 &2695542417121601099
 CapsuleCollider2D:

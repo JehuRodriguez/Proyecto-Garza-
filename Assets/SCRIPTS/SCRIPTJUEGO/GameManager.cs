@@ -64,13 +64,14 @@ public class GameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        timerText.text = Mathf.CeilToInt(timer).ToString() + "s";
-        scoreText.text = "Puntaje: " + score;
+        if (timerText != null) timerText.text = Mathf.CeilToInt(timer).ToString() + "s";
+        if (scoreText != null) scoreText.text = "Puntaje: " + score;
     }
 
     public void StartRound()
     {
-        attemptsLeft = (attemptsLeft == 0 && attemptsScores.Count == 0) ? totalAttempts : attemptsLeft;
+        if (attemptsLeft == 0 && attemptsScores.Count == 0) attemptsLeft = totalAttempts;
+
         timer = maxTime;
         score = 0;
         running = true;
@@ -95,36 +96,29 @@ public class GameManager : MonoBehaviour
 
     void EndRound()
     {
+        if (!running) return;
         running = false;
+
         attemptsScores.Add(score);
         attemptsLeft--;
-       
         var sp = FindObjectOfType<Spawner>();
         if (sp != null) sp.StopSpawner();
 
         if (roundOverPanel != null)
         {
             roundOverPanel.SetActive(true);
-            roundOverText.text = $"Intento acabado.\nPuntaje: {score}\nIntentos restantes: {attemptsLeft}";
+            if (roundOverText != null) roundOverText.text = $"Intento acabado.\nPuntaje: {score}\nIntentos restantes: {attemptsLeft}";
         }
 
-        if (attemptsLeft <= 0)
-        {
-            ShowFinalSummary();
-        }
+        if (attemptsLeft <= 0) ShowFinalSummary();
     }
 
     public void PlayAgainRound()
     {
         if (attemptsLeft > 0)
-        {
-            
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
         else
-        {
             ShowFinalSummary();
-        }
     }
 
     void ShowFinalSummary()
@@ -143,7 +137,7 @@ public class GameManager : MonoBehaviour
         sb.AppendLine("");
         sb.AppendLine("Total: " + total + " pts");
 
-        finalSummaryText.text = sb.ToString();
+        if (finalSummaryText != null) finalSummaryText.text = sb.ToString();
         finalSummaryPanel.SetActive(true);
     }
 
@@ -154,13 +148,6 @@ public class GameManager : MonoBehaviour
         return t;
     }
 
-    public List<int> GetAttemptsScores() => new List<int>(attemptsScores);
-
-    public void ForceEndRound()
-    {
-        timer = 0f;
-    }
-
-
+    public void ForceEndRound() { timer = 0f; }
 
 }

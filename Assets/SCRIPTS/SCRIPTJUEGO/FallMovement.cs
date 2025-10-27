@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class FallMovement : MonoBehaviour
 {
-    public float speed = 2f;
+    public float speed = 2.5f;
 
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         
-        if (transform.position.y < -10f) 
+        if (transform.position.y < -12f) 
             Destroy(gameObject);
     }
 }
