@@ -977,7 +977,7 @@ MonoBehaviour:
   triggerTapOnClick: 1
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 4294967291
+    m_Bits: 59
 --- !u!1 &675303378
 GameObject:
   m_ObjectHideFlags: 0

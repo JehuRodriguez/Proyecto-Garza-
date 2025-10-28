@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Tiempo y puntaje")]
     public float maxTime = 60f;
     public int enemyAddSeconds = 3;
-    public int allySubtractSeconds = 5;
+    public int allySubtractSeconds = 8;
     public bool clampToMax = true;
 
     [Header("Intentos")]

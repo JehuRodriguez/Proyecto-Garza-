@@ -70,15 +70,19 @@ public class MoveOnTap : MonoBehaviour
             Collider2D hit = Physics2D.OverlapPoint(worldPoint, interactableLayer);
             if (hit != null)
             {
-                var target = hit.GetComponent<TapTarget>();
-                if (target != null)
+                if (hit.CompareTag("Enemy"))
                 {
-                    Debug.Log("[MoveAndTap] Click on object -> calling OnTappedByPlayer()");
-                    target.OnTappedByPlayer();
+                    Debug.Log("[MoveAndTap] Click on enemy -> calling OnEnemyTapped()");
+                    GameManager.Instance.OnEnemyTapped(1); 
+                }
+                else if (hit.CompareTag("Ally"))
+                {
+                    Debug.Log("[MoveAndTap] Click on ally -> calling OnAllyTapped()");
+                    GameManager.Instance.OnAllyTapped();
                 }
                 else
                 {
-                    Debug.Log("[MoveAndTap] Click on collider but no TapTarget found on " + hit.name);
+                    Debug.Log("[MoveAndTap] Click on collider but no valid tag found on " + hit.name);
                 }
             }
         }
