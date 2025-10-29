@@ -23,6 +23,8 @@ public class SpawnerOneByOne : MonoBehaviour
     public float timeBetweenWaves = 2.0f;
     public int maxWaveCount = 999;
 
+    public bool running = true;
+
     Camera mainCam;
     int waveIndex = 0;
 
@@ -47,6 +49,8 @@ public class SpawnerOneByOne : MonoBehaviour
     {
         while (true)
         {
+            while (!running) yield return null;
+
             if (!waveMode)
             {
                 SpawnSingleRandom();
@@ -139,6 +143,16 @@ public class SpawnerOneByOne : MonoBehaviour
             yield return null;
         }
         t.position = targetPos;
+    }
+
+    public void StopSpawning()
+    {
+        running = false;
+    }
+
+    public void StartSpawning()
+    {
+        running = true;
     }
 
 }
