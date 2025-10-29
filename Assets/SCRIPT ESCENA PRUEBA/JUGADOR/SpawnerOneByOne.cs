@@ -12,16 +12,20 @@ public class SpawnerOneByOne : MonoBehaviour
     public float entranceDrop = 0.8f;
     public float entranceDuration = 0.35f;
 
-    [Header("Spread (se calcula automáticamente si true)")]
+    [Header("Spread")]
     public bool autoCameraBounds = true;
     public float spawnXMin = -2.6f;
     public float spawnXMax = 2.6f;
     public float spawnY = 6f;
 
-    [Header("Wave settings (opcional)")]
+    [Header("Wave settings ")]
     public bool waveMode = true;
     public float timeBetweenWaves = 2.0f;
     public int maxWaveCount = 999;
+
+    [Header("Probabilidades")]
+    [Range(0f, 1f)]
+    public float enemyProbability = 0.75f;
 
     public bool running = true;
 
@@ -113,9 +117,8 @@ public class SpawnerOneByOne : MonoBehaviour
 
     void SpawnSingleRandom()
     {
-        
-        float r = Random.value;
-        if (r < 0.7f) SpawnAtRandomX(enemyPrefab);
+
+        if (Random.value < enemyProbability) SpawnAtRandomX(enemyPrefab);
         else SpawnAtRandomX(allyPrefab);
     }
 

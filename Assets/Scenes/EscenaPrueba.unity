@@ -294,10 +294,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMode: 1
-  speed: 2
+  speed: 4
   attackRange: 0.4
   reachVerticalTolerance: 1.2
-  returnSpeed: 8
+  returnSpeed: 4
   baseY: -3.95
   smoothTime: 0.06
 --- !u!1 &639125256
@@ -551,6 +551,7 @@ MonoBehaviour:
   waveMode: 1
   timeBetweenWaves: 2
   maxWaveCount: 999
+  enemyProbability: 0.75
   running: 1
 --- !u!1 &1090852014
 GameObject:
@@ -637,7 +638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1608637566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,7 +820,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 30
+  m_text: 80
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -917,9 +918,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d57f326df604044bcab52e4d439ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTime: 30
-  currentTime: 30
-  targetTime: 60
+  startTime: 80
+  currentTime: 80
+  targetTime: 150
   runningOnStart: 1
   clampToPositive: 1
   timeText: {fileID: 1945973209}

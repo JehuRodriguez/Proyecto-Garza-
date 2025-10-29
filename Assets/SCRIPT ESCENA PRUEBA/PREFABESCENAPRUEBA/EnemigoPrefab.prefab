@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.7830189, g: 0.7670457, b: 0.09972411, a: 1}
+  m_Color: {r: 0.78431374, g: 0.53810406, b: 0.09803922, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -165,6 +165,8 @@ MonoBehaviour:
   isEnemy: 1
   destroyVfxPrefab: {fileID: 0}
   destroyDelay: 0
+  enemyAddSeconds: 5
+  allySubtractSeconds: 3
 --- !u!114 &6523931957965229888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,5 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a0ccef41f42b148a4670a8883207fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeed: 2
+  baseFallSpeed: 1.4
+  speedIncreasePerMinute: 0.9
+  maxFallSpeed: 6
   destroyBelowY: -6

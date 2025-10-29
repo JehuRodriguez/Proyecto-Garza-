@@ -9,8 +9,8 @@ public class Tap : MonoBehaviour
     public float destroyDelay = 0f;
 
     [Header("Tiempo que cambia al ser tappeado")]
-    public float enemyAddSeconds = 1f;   
-    public float allySubtractSeconds = 2f; 
+    public float enemyAddSeconds = 5f;   
+    public float allySubtractSeconds = 3f; 
 
 
     public void OnTapped()

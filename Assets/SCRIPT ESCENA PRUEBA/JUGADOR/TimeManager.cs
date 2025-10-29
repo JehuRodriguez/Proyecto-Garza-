@@ -1,17 +1,23 @@
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[ExecuteAlways]
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance;
+    public static bool GameIsOver = false;
 
     [Header("Tiempo")]
-    public float startTime = 30f;
-    public float currentTime = 30f;
-    public float targetTime = 60f;
+    public float startTime = 40f;
+    public float currentTime = 40f;
+    public float targetTime = 75f;
 
     [Header("Ajustes")]
     public bool runningOnStart = true;
@@ -26,12 +32,32 @@ public class TimeManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            DestroyImmediate(gameObject);
+
+        if (messageText != null && !Application.isPlaying)
+            messageText.gameObject.SetActive(false);
     }
+
+    void OnValidate()
+    {
+       
+#if UNITY_EDITOR
+        if (!Application.isPlaying && messageText != null)
+        {
+            messageText.gameObject.SetActive(false);
+            EditorUtility.SetDirty(messageText);
+        }
+#endif
+    }
+
 
     void Start()
     {
+        if (!Application.isPlaying) return;
+
         currentTime = startTime;
         UpdateTimeUI();
         if (messageText != null)
@@ -66,7 +92,7 @@ public class TimeManager : MonoBehaviour
         if (timeText != null)
         {
           
-            timeText.text = Mathf.CeilToInt(currentTime).ToString();
+            timeText.text = Mathf.CeilToInt(currentTime).ToString("00");
         }
     }
 
@@ -74,6 +100,7 @@ public class TimeManager : MonoBehaviour
     {
         gameFinished = false;
         IsRunning = true;
+        GameIsOver = false;
     }
 
     public void StopTimer()
@@ -105,6 +132,7 @@ public class TimeManager : MonoBehaviour
         if (gameFinished) return;
         gameFinished = true;
         IsRunning = false;
+        GameIsOver = true;
 
         SpawnerOneByOne sp = FindObjectOfType<SpawnerOneByOne>();
         if (sp != null) sp.StopSpawning();

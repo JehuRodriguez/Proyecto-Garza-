@@ -32,6 +32,9 @@ public class PlayerController2D : MonoBehaviour
 
     void Update()
     {
+        if (TimeManager.GameIsOver || (TimeManager.Instance != null && !TimeManager.Instance.IsRunning))
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -56,6 +59,9 @@ public class PlayerController2D : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (TimeManager.GameIsOver || (TimeManager.Instance != null && !TimeManager.Instance.IsRunning))
+            return;
+
         Vector2 pos = rb.position;
         Vector2 desired = destination;
 
