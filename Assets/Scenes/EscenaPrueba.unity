@@ -294,11 +294,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMode: 1
-  speed: 6
+  speed: 2
   attackRange: 0.4
   reachVerticalTolerance: 1.2
   returnSpeed: 8
   baseY: -3.95
+  smoothTime: 0.06
 --- !u!1 &671432962
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +401,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 916657461}
-  - component: {fileID: 916657460}
+  - component: {fileID: 916657462}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -408,26 +409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &916657460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916657459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db10a84eecb60244aa4815192ed84a2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2840513483367164451, guid: e525cd073ec63614c92070ee74e30b58, type: 3}
-  allyPrefab: {fileID: 7452977511846918404, guid: ec28e6afb28ee9349bbc8a64fa4eead8, type: 3}
-  spawnIntervalBetweenPairs: 1.5
-  spawnDelayBetweenEnemyAndAlly: 0.45
-  spawnXMin: -2.5
-  spawnXMax: 2.5
-  spawnY: 5
-  horizontalOffsetWhenSpawning: 0.6
 --- !u!4 &916657461
 Transform:
   m_ObjectHideFlags: 0
@@ -443,6 +424,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &916657462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916657459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ddb6ffde8c417042a5a5f2a168ca371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 2840513483367164451, guid: e525cd073ec63614c92070ee74e30b58, type: 3}
+  allyPrefab: {fileID: 7452977511846918404, guid: ec28e6afb28ee9349bbc8a64fa4eead8, type: 3}
+  spawnIntervalBetweenSingles: 0.9
+  entranceDrop: 0.8
+  entranceDuration: 0.35
+  autoCameraBounds: 1
+  spawnXMin: -2.6
+  spawnXMax: 2.6
+  spawnY: 6
+  waveMode: 1
+  timeBetweenWaves: 2
+  maxWaveCount: 999
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
