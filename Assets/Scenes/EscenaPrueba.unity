@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 232209862}
   - component: {fileID: 232209861}
   - component: {fileID: 232209860}
-  - component: {fileID: 232209859}
   m_Layer: 0
   m_Name: Wari
   m_TagString: Player
@@ -142,19 +141,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &232209859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 232209858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe302e3c6288d24e94861a05ac6112d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!61 &232209860
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -215,7 +201,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -306,7 +292,6 @@ GameObject:
   - component: {fileID: 595060352}
   - component: {fileID: 595060351}
   - component: {fileID: 595060350}
-  - component: {fileID: 595060349}
   m_Layer: 0
   m_Name: Enemigo
   m_TagString: Enemy
@@ -314,18 +299,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &595060349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 595060348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a955fd0457f27c5498e0c9321d14667e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &595060350
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -376,7 +349,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
