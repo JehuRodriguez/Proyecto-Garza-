@@ -6,9 +6,9 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Caminar
+  m_Name: CaminarTurista
   serializedVersion: 7
-  m_Legacy: 1
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -17,34 +17,9 @@ AnimationClip:
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
-  m_PPtrCurves:
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 21300000, guid: d3229a12ecdf9e1448555355dd8f7a86, type: 3}
-    - time: 0.083333336
-      value: {fileID: 21300000, guid: f4ff3fd555a9b3046b608be3e9bba975, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: 54b6ad068c22bc944b36d5b1c22b242a, type: 3}
-    - time: 0.25
-      value: {fileID: 21300000, guid: 8741f16800b904a42a3133ad8c3bc0d7, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 31bd84996f1cf0b428b59e39f14ba8da, type: 3}
-    - time: 0.4
-      value: {fileID: 21300000, guid: 9348d96d31cc67841973d4849d6d167b, type: 3}
-    - time: 0.48333332
-      value: {fileID: 21300000, guid: 24f4f602ec7d7cf4b98e0859cd623538, type: 3}
-    - time: 0.56666666
-      value: {fileID: 21300000, guid: 35fd0a8f55905b84088df394ff1e53cd, type: 3}
-    - time: 0.65
-      value: {fileID: 21300000, guid: edeb4a88e72b17641aecca3a8b3026fb, type: 3}
-    attribute: m_Sprite
-    path: 
-    classID: 212
-    script: {fileID: 0}
-    flags: 2
+  m_PPtrCurves: []
   m_SampleRate: 60
-  m_WrapMode: 2
+  m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -56,7 +31,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
