@@ -69,22 +69,25 @@ public class TimeManager : MonoBehaviour
     {
         if (!IsRunning || gameFinished) return;
 
-       
-        currentTime -= Time.deltaTime;
-        if (clampToPositive && currentTime < 0f) currentTime = 0f;
+        float speedMultiplier = 1f;
+
+        if (currentTime <= 60f) speedMultiplier = 1.2f;   
+        if (currentTime <= 50f) speedMultiplier = 1.5f;   
+        if (currentTime <= 40f) speedMultiplier = 1.8f;   
+        if (currentTime <= 30f) speedMultiplier = 2.2f;   
+        if (currentTime <= 20f) speedMultiplier = 3f;
+
+        currentTime -= Time.deltaTime * speedMultiplier;
+
+        if (clampToPositive && currentTime < 0f)
+            currentTime = 0f;
 
         UpdateTimeUI();
 
         if (currentTime <= 0f)
-        {
-            
             OnGameOver(false);
-        }
         else if (currentTime >= targetTime)
-        {
-           
             OnGameOver(true);
-        }
     }
 
     void UpdateTimeUI()
