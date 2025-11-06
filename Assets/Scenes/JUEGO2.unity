@@ -275,8 +275,8 @@ Transform:
   m_GameObject: {fileID: 232209858}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: -3.95, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.13, y: -3.99, z: 0}
+  m_LocalScale: {x: 0.5383, y: 0.5383, z: 0.5383}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2840513483367164451, guid: e525cd073ec63614c92070ee74e30b58, type: 3}
   allyPrefab: {fileID: 7452977511846918404, guid: ec28e6afb28ee9349bbc8a64fa4eead8, type: 3}
-  spawnIntervalBetweenSingles: 0.9
+  spawnIntervalBetweenSingles: 1.08
   entranceDrop: 0.8
   entranceDuration: 0.35
   autoCameraBounds: 1
@@ -699,8 +699,8 @@ Transform:
   m_GameObject: {fileID: 1523010859}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: -6.8, z: 5.15}
-  m_LocalScale: {x: 1.818829, y: 1.818829, z: 1.818829}
+  m_LocalPosition: {x: -0.0428, y: -0.3142, z: 5.15}
+  m_LocalScale: {x: 0.6921693, y: 0.6921693, z: 0.6921693}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -873,7 +873,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -833.3804, y: 439.61963}
+  m_AnchoredPosition: {x: -230, y: 531}
   m_SizeDelta: {x: 157.2393, y: 92.7607}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1945973208
@@ -1021,7 +1021,7 @@ Transform:
   m_GameObject: {fileID: 2066979111}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.64, y: -4.32, z: -0.05885311}
+  m_LocalPosition: {x: 48, y: -49, z: -0.05885311}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
