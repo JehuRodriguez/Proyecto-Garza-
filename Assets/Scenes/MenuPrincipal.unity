@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d8cf97444876b24190a657753e82cf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: JUEGO
+  gameSceneName: JUEGO2
   creditsSceneName: CREDITOS
   playButton: {fileID: 1858447998}
   creditsButton: {fileID: 1572169429}

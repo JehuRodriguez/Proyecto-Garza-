@@ -1007,6 +1007,9 @@ MonoBehaviour:
   targetTime: 150
   runningOnStart: 1
   clampToPositive: 1
+  speedStep: 0.2
+  allyExtraSteps: 1
+  allyAccelDuration: 6
   timeText: {fileID: 1945973209}
   messageText: {fileID: 1608637566}
 --- !u!4 &2066979113

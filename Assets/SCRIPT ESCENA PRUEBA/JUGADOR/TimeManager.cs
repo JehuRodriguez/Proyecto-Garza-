@@ -5,7 +5,6 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 [ExecuteAlways]
@@ -23,9 +22,22 @@ public class TimeManager : MonoBehaviour
     public bool runningOnStart = true;
     public bool clampToPositive = true;
 
+    [Header("Aceleración por bloques de 10s")]
+    [Tooltip("Cada 10 segundos transcurridos desde startTime, la cuenta se hará más rápida en este factor.")]
+    public float speedStep = 0.20f;
+
+    [Tooltip("Si tocas un aliado, se añade este número de 'pasos' extra (como si hubieran pasado X bloques de 10s).")]
+    public int allyExtraSteps = 1;
+
+    [Tooltip("Cuánto tiempo (s) dura el efecto de aceleración extra al tocar un aliado.")]
+    public float allyAccelDuration = 6f;
+
     [Header("UI (TextMeshPro)")]
     public TextMeshProUGUI timeText;     
     public TextMeshProUGUI messageText;
+
+    int allyExtraActiveSteps = 0;
+    float allyAccelTimer = 0f;
 
     public bool IsRunning { get; private set; } = false;
     bool gameFinished = false;
@@ -69,18 +81,26 @@ public class TimeManager : MonoBehaviour
     {
         if (!IsRunning || gameFinished) return;
 
-        float speedMultiplier = 1f;
+        if (allyExtraActiveSteps > 0)
+        {
+            allyAccelTimer -= Time.deltaTime;
+            if (allyAccelTimer <= 0f)
+            {
+                allyExtraActiveSteps = 0;
+                allyAccelTimer = 0f;
+            }
+        }
 
-        if (currentTime <= 60f) speedMultiplier = 1.2f;   
-        if (currentTime <= 50f) speedMultiplier = 1.5f;   
-        if (currentTime <= 40f) speedMultiplier = 1.8f;   
-        if (currentTime <= 30f) speedMultiplier = 2.2f;   
-        if (currentTime <= 20f) speedMultiplier = 3f;
+        float timePassed = Mathf.Max(0f, startTime - currentTime);
+        int stepsFromTime = Mathf.FloorToInt(timePassed / 10f);
+        if (stepsFromTime < 0) stepsFromTime = 0;
+
+        float speedMultiplier = 1f + stepsFromTime * speedStep + allyExtraActiveSteps * speedStep;
 
         currentTime -= Time.deltaTime * speedMultiplier;
 
-        if (clampToPositive && currentTime < 0f)
-            currentTime = 0f;
+        if (clampToPositive && currentTime < 0f) currentTime = 0f;
+
 
         UpdateTimeUI();
 
@@ -104,6 +124,8 @@ public class TimeManager : MonoBehaviour
         gameFinished = false;
         IsRunning = true;
         GameIsOver = false;
+        allyExtraActiveSteps = 0;
+        allyAccelTimer = 0f;
     }
 
     public void StopTimer()
@@ -124,6 +146,9 @@ public class TimeManager : MonoBehaviour
     {
         if (gameFinished) return;
         currentTime -= seconds;
+        allyExtraActiveSteps += allyExtraSteps;
+        allyAccelTimer = allyAccelDuration;
+
         if (clampToPositive && currentTime < 0f) currentTime = 0f;
         UpdateTimeUI();
 
