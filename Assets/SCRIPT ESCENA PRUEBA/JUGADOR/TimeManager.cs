@@ -170,6 +170,20 @@ public class TimeManager : MonoBehaviour
             messageText.gameObject.SetActive(true);
             messageText.text = won ? "¡GANASTE!" : "GAME OVER";
         }
+
+        int finalScore = Mathf.CeilToInt(currentTime);
+        if (PlayerProfile.Instance != null && !string.IsNullOrEmpty(PlayerProfile.Instance.playerName))
+        {
+            LeaderBoardManager.Instance.AddAttempt(PlayerProfile.Instance.playerName, finalScore);
+        }
+
+        UILeaderBoard ui = FindObjectOfType<UILeaderBoard>();
+        if (ui != null)
+        {
+            ui.ShowGameOver(won);
+        }
+
+
     }
 
 }
