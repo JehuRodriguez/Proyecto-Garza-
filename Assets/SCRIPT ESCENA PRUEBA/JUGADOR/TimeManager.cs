@@ -171,17 +171,15 @@ public class TimeManager : MonoBehaviour
         }
 
         int finalScore = Mathf.CeilToInt(currentTime);
-        if (PlayerProfile.Instance != null && !string.IsNullOrEmpty(PlayerProfile.Instance.playerName))
+        string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "";
+
+        if (!string.IsNullOrEmpty(playerName))
         {
-            LeaderBoardManager.Instance.AddAttempt(PlayerProfile.Instance.playerName, finalScore);
+            SimpleProfileManager.Instance?.AddAttempt(playerName, finalScore);
         }
 
-        UILeaderBoard ui = FindObjectOfType<UILeaderBoard>();
-        if (ui != null)
-        {
-            ui.ShowGameOver(won);
-        }
-
+     
+        SimpleUIManager.Instance?.HandleGameOver(won, finalScore);
 
     }
 

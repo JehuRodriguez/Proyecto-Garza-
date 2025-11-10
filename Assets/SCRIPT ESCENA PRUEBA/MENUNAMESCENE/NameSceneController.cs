@@ -11,26 +11,30 @@ public class NameSceneController : MonoBehaviour
     public Button btnStart;
     public string gameSceneName = "JUEGO2";
 
+    const string PREF_KEY_NAME = "PlayerName";
+
     void Start()
     {
         if (btnStart != null) btnStart.onClick.AddListener(OnStartClicked);
-       
-        if (PlayerProfile.Instance != null && nameInputField != null)
-            nameInputField.text = PlayerProfile.Instance.playerName;
+
+        
+        if (nameInputField != null && PlayerPrefs.HasKey(PREF_KEY_NAME))
+        {
+            nameInputField.text = PlayerPrefs.GetString(PREF_KEY_NAME);
+        }
     }
 
     void OnStartClicked()
     {
         string n = nameInputField != null ? nameInputField.text.Trim() : "";
         if (string.IsNullOrEmpty(n)) return;
-        if (PlayerProfile.Instance != null)
-            PlayerProfile.Instance.SetName(n);
+
        
+        PlayerPrefs.SetString(PREF_KEY_NAME, n);
+        PlayerPrefs.Save();
+
         if (!string.IsNullOrEmpty(gameSceneName))
             SceneManager.LoadScene(gameSceneName);
     }
-
-
-
 
 }
