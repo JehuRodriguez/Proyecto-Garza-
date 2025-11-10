@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Nombres de Escenas")]
-    [Tooltip("Escribe exactamente el nombre de la escena del juego")]
-    public string gameSceneName = "GameScene";
+    [Tooltip("Escribe exactamente el nombre de la escena para pedir el nombre (NameScene)")]
+    public string nameSceneName = "NameScene";
+
 
     [Tooltip("Escribe exactamente el nombre de la escena de créditos")]
     public string creditsSceneName = "CreditsScene";
@@ -33,13 +34,13 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        if (!string.IsNullOrEmpty(gameSceneName))
+        if (!string.IsNullOrEmpty(nameSceneName))
         {
-            SceneManager.LoadScene(gameSceneName);
+            SceneManager.LoadScene(nameSceneName);
         }
         else
         {
-            Debug.LogWarning(" No se asignó un nombre de escena para el juego.");
+            Debug.LogWarning("No se asignó el nombre de la escena para pedir el nombre.");
         }
     }
 
