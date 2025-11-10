@@ -167,8 +167,7 @@ public class TimeManager : MonoBehaviour
 
         if (messageText != null)
         {
-            messageText.gameObject.SetActive(true);
-            messageText.text = won ? "¡GANASTE!" : "GAME OVER";
+            messageText.gameObject.SetActive(false);
         }
 
         int finalScore = Mathf.CeilToInt(currentTime);
