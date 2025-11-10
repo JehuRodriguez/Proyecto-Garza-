@@ -2131,6 +2131,83 @@ MonoBehaviour:
   maxWaveCount: 999
   enemyProbability: 0.75
   running: 1
+--- !u!1 &970996748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 970996749}
+  - component: {fileID: 970996751}
+  - component: {fileID: 970996750}
+  m_Layer: 5
+  m_Name: MyAttempsContent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &970996749
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970996748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1276924781}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &970996750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970996748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &970996751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970996748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 8
+    m_Right: 8
+    m_Top: 6
+    m_Bottom: 6
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1070824580
 GameObject:
   m_ObjectHideFlags: 0
@@ -2608,6 +2685,7 @@ RectTransform:
   m_Children:
   - {fileID: 221290231}
   - {fileID: 1547606791}
+  - {fileID: 970996749}
   m_Father: {fileID: 639125257}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3498,11 +3576,11 @@ MonoBehaviour:
   btnViewScore: {fileID: 1070824584}
   btnPlayAgain: {fileID: 406073390}
   btnExitToMainMenu: {fileID: 1669604689}
-  leaderboardSection: {fileID: 0}
-  leaderboardContent: {fileID: 0}
-  rowPrefab: {fileID: 0}
-  myAttemptsContent: {fileID: 0}
-  attemptRowPrefab: {fileID: 0}
+  leaderboardSection: {fileID: 1276924780}
+  leaderboardContent: {fileID: 221290231}
+  rowPrefab: {fileID: 4637536214478411204, guid: 98dd21e91d0cefa48b3e2c829068dbc0, type: 3}
+  myAttemptsContent: {fileID: 970996749}
+  attemptRowPrefab: {fileID: 1770779396233448451, guid: 3babd8922464ae049a2bf8de64f65029, type: 3}
   mainMenuSceneName: MenuPrincipal
   gameSceneName: JUEGO2
 --- !u!4 &1657827083
