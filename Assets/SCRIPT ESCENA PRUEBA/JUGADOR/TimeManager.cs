@@ -1,7 +1,3 @@
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,23 +10,24 @@ public class TimeManager : MonoBehaviour
     public static bool GameIsOver = false;
 
     [Header("Tiempo")]
-    public float startTime = 40f;
-    public float currentTime = 40f;
+    public float startTime = 60f;
+    public float currentTime = 60f;
     public float targetTime = 75f;
 
     [Header("Ajustes")]
     public bool runningOnStart = true;
     public bool clampToPositive = true;
+    public bool clampToMax = true;
 
     [Header("Aceleración por bloques de 10s")]
-    [Tooltip("Cada 10 segundos transcurridos desde startTime, la cuenta se hará más rápida en este factor.")]
     public float speedStep = 0.20f;
-
-    [Tooltip("Si tocas un aliado, se añade este número de 'pasos' extra (como si hubieran pasado X bloques de 10s).")]
     public int allyExtraSteps = 1;
-
-    [Tooltip("Cuánto tiempo (s) dura el efecto de aceleración extra al tocar un aliado.")]
     public float allyAccelDuration = 6f;
+
+
+    [Header("Puntuación")]
+    public int currentScore = 0;
+    public int scorePerEnemy = 1;
 
     [Header("UI (TextMeshPro)")]
     public TextMeshProUGUI timeText;     
@@ -53,24 +50,14 @@ public class TimeManager : MonoBehaviour
             messageText.gameObject.SetActive(false);
     }
 
-    void OnValidate()
-    {
-       
-#if UNITY_EDITOR
-        if (!Application.isPlaying && messageText != null)
-        {
-            messageText.gameObject.SetActive(false);
-            EditorUtility.SetDirty(messageText);
-        }
-#endif
-    }
-
 
     void Start()
     {
         if (!Application.isPlaying) return;
 
         currentTime = startTime;
+        UpdateTimeUI();
+        currentScore = 0;
         UpdateTimeUI();
         if (messageText != null)
             messageText.gameObject.SetActive(false);
@@ -104,10 +91,7 @@ public class TimeManager : MonoBehaviour
 
         UpdateTimeUI();
 
-        if (currentTime <= 0f)
-            OnGameOver(false);
-        else if (currentTime >= targetTime)
-            OnGameOver(true);
+        if (currentTime <= 0f) OnGameOver(false);
     }
 
     void UpdateTimeUI()
@@ -137,9 +121,9 @@ public class TimeManager : MonoBehaviour
     {
         if (gameFinished) return;
         currentTime += seconds;
+        if (clampToMax && currentTime > startTime) currentTime = startTime; 
         UpdateTimeUI();
 
-        if (currentTime >= targetTime) OnGameOver(true);
     }
 
     public void SubtractTime(float seconds)
@@ -153,6 +137,12 @@ public class TimeManager : MonoBehaviour
         UpdateTimeUI();
 
         if (currentTime <= 0f) OnGameOver(false);
+    }
+
+    public void AddScore(int amount)
+    {
+        if (gameFinished) return;
+        currentScore += amount;
     }
 
     void OnGameOver(bool won)
@@ -170,7 +160,7 @@ public class TimeManager : MonoBehaviour
             messageText.gameObject.SetActive(false);
         }
 
-        int finalScore = Mathf.CeilToInt(currentTime);
+        int finalScore = currentScore;
         string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "";
 
         if (!string.IsNullOrEmpty(playerName))

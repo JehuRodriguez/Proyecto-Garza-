@@ -17,8 +17,12 @@ public class Tap : MonoBehaviour
     {
         if (TimeManager.Instance != null)
         {
-            if (isEnemy) TimeManager.Instance.AddTime(enemyAddSeconds);
-            else TimeManager.Instance.SubtractTime(allySubtractSeconds);
+            TimeManager.Instance.AddTime(enemyAddSeconds);
+            TimeManager.Instance.AddScore(1); 
+        }
+        else
+        {
+            TimeManager.Instance.SubtractTime(allySubtractSeconds);
         }
 
         if (destroyVfxPrefab != null)

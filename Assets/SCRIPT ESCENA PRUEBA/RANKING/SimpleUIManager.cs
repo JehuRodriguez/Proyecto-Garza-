@@ -97,6 +97,24 @@ public class SimpleUIManager : MonoBehaviour
         if (gameOverSection != null) gameOverSection.SetActive(true);
 
         if (gameOverTitle != null) gameOverTitle.text = won ? "¡GANASTE!" : "PERDISTE";
+
+        if (btnViewScore != null)
+        {
+            var txt = btnViewScore.GetComponentInChildren<TextMeshProUGUI>();
+            if (txt != null) txt.text = $"Puntaje: {finalScore}";
+            btnViewScore.gameObject.SetActive(won); 
+        }
+        if (won)
+        {
+            if (btnPlayAgain != null) btnPlayAgain.gameObject.SetActive(false);
+            if (btnExitToMainMenu != null) btnExitToMainMenu.gameObject.SetActive(true);
+        }
+        else 
+        {
+            if (btnPlayAgain != null) btnPlayAgain.gameObject.SetActive(true);
+            if (btnExitToMainMenu != null) btnExitToMainMenu.gameObject.SetActive(false);
+            if (btnViewScore != null) btnViewScore.gameObject.SetActive(false);
+        }
     }
 
     void OnViewScoreClicked()
