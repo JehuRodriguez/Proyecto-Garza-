@@ -88,9 +88,9 @@ public class SimpleUIManager : MonoBehaviour
     public void HandleGameOver(bool won, int finalScore)
     {
         if (!string.IsNullOrEmpty(currentPlayerName))
-            SimpleProfileManager.Instance?.AddAttempt(currentPlayerName, finalScore);
+            MyGame.Profiles.SimpleManager.Instance?.AddAttempt(currentPlayerName, finalScore);
 
-     
+
         if (mainPanel != null) mainPanel.SetActive(true);
         if (startSection != null) startSection.SetActive(false);
         if (leaderboardSection != null) leaderboardSection.SetActive(false);
@@ -146,9 +146,9 @@ public class SimpleUIManager : MonoBehaviour
             foreach (Transform t in myAttemptsContent) Destroy(t.gameObject);
         }
 
-        if (SimpleProfileManager.Instance != null && leaderboardContent != null && rowPrefab != null)
+        if (MyGame.Profiles.SimpleManager.Instance != null && leaderboardContent != null && rowPrefab != null)
         {
-            var list = SimpleProfileManager.Instance.GetGlobalBestList();
+            var list = MyGame.Profiles.SimpleManager.Instance.GetGlobalBestList();
             foreach (var item in list)
             {
                 GameObject row = Instantiate(rowPrefab, leaderboardContent);
@@ -166,10 +166,10 @@ public class SimpleUIManager : MonoBehaviour
 
         }
 
-        if (SimpleProfileManager.Instance != null && myAttemptsContent != null && attemptRowPrefab != null)
+        if (MyGame.Profiles.SimpleManager.Instance != null && myAttemptsContent != null && attemptRowPrefab != null)
         {
             string me = currentPlayerName;
-            var attempts = SimpleProfileManager.Instance.GetAttempts(me);
+            var attempts = MyGame.Profiles.SimpleManager.Instance.GetAttempts(me);
             for (int i = 0; i < attempts.Count; i++)
             {
                 GameObject r = Instantiate(attemptRowPrefab, myAttemptsContent);

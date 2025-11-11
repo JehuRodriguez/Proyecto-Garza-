@@ -165,7 +165,7 @@ public class TimeManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(playerName))
         {
-            SimpleProfileManager.Instance?.AddAttempt(playerName, finalScore);
+            MyGame.Profiles.SimpleManager.Instance?.AddAttempt(playerName, finalScore);
         }
 
      
