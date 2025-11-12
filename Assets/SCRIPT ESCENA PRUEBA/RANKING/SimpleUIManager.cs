@@ -102,7 +102,14 @@ public class SimpleUIManager : MonoBehaviour
 
         if (gameOverTitle != null) gameOverTitle.text = won ? "¡GANASTE!" : "PERDISTE";
 
-        if (btnViewScore != null) btnViewScore.gameObject.SetActive(true);
+        if (gameOverScoreText != null)
+        {
+            gameOverScoreText.text = $"Puntaje: {finalScore}";
+            gameOverScoreText.gameObject.SetActive(won);
+        }
+
+        if (btnViewScore != null)
+            btnViewScore.gameObject.SetActive(won);
 
         if (won)
         {
