@@ -12,7 +12,7 @@ public class TimeManager : MonoBehaviour
     [Header("Tiempo")]
     public float startTime = 60f;
     public float currentTime = 60f;
-    public float targetTime = 140f;
+    public float targetTime = 100f;
 
     [Header("Ajustes")]
     public bool runningOnStart = true;
@@ -27,7 +27,7 @@ public class TimeManager : MonoBehaviour
     [Header("UI (TextMeshPro)")]
     public TextMeshProUGUI timeText;     
     public TextMeshProUGUI messageText;
-    public TextMeshProUGUI scoreText;
+   
 
     int allyExtraActiveSteps = 0;
     float allyAccelTimer = 0f;
@@ -35,33 +35,31 @@ public class TimeManager : MonoBehaviour
 
 
     public bool IsRunning { get; private set; } = false;
+    float playTimer = 0f;
+
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else if (Instance != this)
-            DestroyImmediate(gameObject);
-
-        if (messageText != null && !Application.isPlaying)
-            messageText.gameObject.SetActive(false);
+        if (Instance == null) Instance = this;
+        else if (Instance != this) { Debug.LogWarning("[TimeManager] Instancia duplicada destruida."); Destroy(gameObject); return; }
     }
 
 
     void Start()
     {
-        if (!Application.isPlaying) return;
-
         currentTime = startTime;
+        playTimer = 0f;
         UpdateTimeUI();
-        if (messageText != null)
-            messageText.gameObject.SetActive(false);
+        if (messageText != null) messageText.gameObject.SetActive(false);
         if (runningOnStart) StartTimer();
+        Debug.Log("[TimeManager] Start - startTime=" + startTime + " targetTime=" + targetTime);
     }
 
     void Update()
     {
         if (!IsRunning || gameFinished) return;
+
+        playTimer += Time.deltaTime;
 
         if (allyExtraActiveSteps > 0)
         {
@@ -89,13 +87,13 @@ public class TimeManager : MonoBehaviour
         if (currentTime <= 0f)
         {
             OnGameOver(true);
-           
+            return;
         }
 
-        if (currentTime >= targetTime)
+        if (clampToMax && currentTime >= targetTime)
         {
             OnGameOver(true);
-           
+            return;
         }
 
     }
@@ -103,11 +101,7 @@ public class TimeManager : MonoBehaviour
     void UpdateTimeUI()
     {
         if (timeText != null)
-        {
-          
             timeText.text = Mathf.CeilToInt(currentTime).ToString("00");
-        }
-
     }
 
     public void StartTimer()
@@ -117,6 +111,7 @@ public class TimeManager : MonoBehaviour
         GameIsOver = false;
         allyExtraActiveSteps = 0;
         allyAccelTimer = 0f;
+        playTimer = 0f;
     }
 
     public void StopTimer()
@@ -128,8 +123,13 @@ public class TimeManager : MonoBehaviour
     {
         if (gameFinished) return;
         currentTime += seconds;
-        if (clampToMax && currentTime > targetTime)
+        if (clampToMax && currentTime > targetTime) currentTime = targetTime;
         UpdateTimeUI();
+        if (clampToMax && currentTime >= targetTime)
+        {
+            Debug.Log("[TimeManager] AddTime alcanzó target -> GANÓ");
+            OnGameOver(true);
+        }
 
     }
 
@@ -137,6 +137,7 @@ public class TimeManager : MonoBehaviour
     {
         if (gameFinished) return;
         currentTime -= seconds;
+
         allyExtraActiveSteps += allyExtraSteps;
         allyAccelTimer = allyAccelDuration;
 
@@ -163,12 +164,17 @@ public class TimeManager : MonoBehaviour
             messageText.gameObject.SetActive(true);
         }
 
+
+        int finalScore = Mathf.RoundToInt(playTimer);
+
         string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "Jugador";
-        int finalScore = Mathf.RoundToInt(currentTime); 
+        
 
         MyGame.Profiles.SimpleManager.Instance?.AddAttempt(playerName, finalScore);
-        SimpleUIManager.Instance?.HandleGameOver(won, finalScore);
-
+        if (SimpleUIManager.Instance != null) SimpleUIManager.Instance.HandleGameOver(won, finalScore);
+        else Debug.LogError("[TimeManager] SimpleUIManager.Instance es null -> no puedo mostrar panel.");
     }
 
 }
+
+
