@@ -12,8 +12,7 @@ public class TimeManager : MonoBehaviour
     [Header("Tiempo")]
     public float startTime = 60f;
     public float currentTime = 60f;
-    public float maxTime = 150f;
-    public float targetTime = 75f;
+    public float targetTime = 140f;
 
     [Header("Ajustes")]
     public bool runningOnStart = true;
@@ -25,16 +24,6 @@ public class TimeManager : MonoBehaviour
     public int allyExtraSteps = 1;
     public float allyAccelDuration = 6f;
 
-    [Header("Condiciones de victoria")]
-    public bool useScoreToWin = true;
-    public int scoreToWin = 20;
-    public bool useTargetTimeToWin = false;
-
-
-    [Header("Puntuación")]
-    public int currentScore = 0;
-    public int scorePerEnemy = 1;
-
     [Header("UI (TextMeshPro)")]
     public TextMeshProUGUI timeText;     
     public TextMeshProUGUI messageText;
@@ -42,9 +31,10 @@ public class TimeManager : MonoBehaviour
 
     int allyExtraActiveSteps = 0;
     float allyAccelTimer = 0f;
+    bool gameFinished = false;
+
 
     public bool IsRunning { get; private set; } = false;
-    bool gameFinished = false;
 
     void Awake()
     {
@@ -63,7 +53,6 @@ public class TimeManager : MonoBehaviour
         if (!Application.isPlaying) return;
 
         currentTime = startTime;
-        currentScore = 0;
         UpdateTimeUI();
         if (messageText != null)
             messageText.gameObject.SetActive(false);
@@ -97,19 +86,18 @@ public class TimeManager : MonoBehaviour
 
         UpdateTimeUI();
 
-        if (useScoreToWin && currentScore >= scoreToWin)
+        if (currentTime <= 0f)
         {
             OnGameOver(true);
-            return;
+           
         }
 
-        if (useTargetTimeToWin && currentTime >= targetTime)
+        if (currentTime >= targetTime)
         {
             OnGameOver(true);
-            return;
+           
         }
 
-        if (currentTime <= 0f) OnGameOver(false);
     }
 
     void UpdateTimeUI()
@@ -120,7 +108,6 @@ public class TimeManager : MonoBehaviour
             timeText.text = Mathf.CeilToInt(currentTime).ToString("00");
         }
 
-        if (scoreText != null) scoreText.text = currentScore.ToString();
     }
 
     public void StartTimer()
@@ -141,7 +128,7 @@ public class TimeManager : MonoBehaviour
     {
         if (gameFinished) return;
         currentTime += seconds;
-        if (clampToMax && currentTime > maxTime) currentTime = maxTime; 
+        if (clampToMax && currentTime > targetTime)
         UpdateTimeUI();
 
     }
@@ -159,13 +146,7 @@ public class TimeManager : MonoBehaviour
         if (currentTime <= 0f) OnGameOver(false);
     }
 
-    public void AddScore(int amount)
-    {
-        if (gameFinished) return;
-        currentScore += amount;
-        if (scoreText != null) scoreText.text = currentScore.ToString();
-    }
-
+   
     void OnGameOver(bool won)
     {
         if (gameFinished) return;
@@ -173,20 +154,21 @@ public class TimeManager : MonoBehaviour
         IsRunning = false;
         GameIsOver = true;
 
-        var sp = FindObjectOfType<SpawnerOneByOne>();
+        SpawnerOneByOne sp = FindObjectOfType<SpawnerOneByOne>();
         if (sp != null) sp.StopSpawning();
 
-        if (messageText != null) messageText.gameObject.SetActive(false);
-
-        int finalScore = currentScore;
-        string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "";
-
-        if (!string.IsNullOrEmpty(playerName))
+        if (messageText != null)
         {
-            MyGame.Profiles.SimpleManager.Instance?.AddAttempt(playerName, finalScore);
+            messageText.text = won ? "¡GANASTE!" : "PERDISTE";
+            messageText.gameObject.SetActive(true);
         }
 
+        string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "Jugador";
+        int finalScore = Mathf.RoundToInt(currentTime); 
+
+        MyGame.Profiles.SimpleManager.Instance?.AddAttempt(playerName, finalScore);
         SimpleUIManager.Instance?.HandleGameOver(won, finalScore);
+
     }
 
 }

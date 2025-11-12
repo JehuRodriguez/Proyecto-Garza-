@@ -20,7 +20,7 @@ public class Tap : MonoBehaviour
             if (isEnemy)
             {
                 TimeManager.Instance.AddTime(enemyAddSeconds);
-                TimeManager.Instance.AddScore(1); 
+             
             }
             else
             {
