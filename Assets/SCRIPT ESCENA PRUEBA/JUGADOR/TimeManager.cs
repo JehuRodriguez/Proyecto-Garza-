@@ -62,8 +62,19 @@ public class TimeManager : MonoBehaviour
 
         if (timeText != null) timeText.text = Mathf.CeilToInt(currentTime).ToString("00");
 
-        if (currentTime <= 0f) OnGameOver(false);
-        if (currentTime >= targetTime) OnGameOver(true);
+        if (currentTime <= 0f)
+        {
+            Debug.Log("[TimeManager] Update -> currentTime <= 0 -> OnGameOver(false)");
+            OnGameOver(false);
+            return;
+        }
+
+        if (currentTime >= targetTime)
+        {
+            Debug.Log("[TimeManager] Update -> currentTime >= targetTime -> OnGameOver(true). currentTime=" + currentTime);
+            OnGameOver(true);
+            return;
+        }
     }
 
     public void StartTimer()
@@ -120,7 +131,7 @@ public class TimeManager : MonoBehaviour
         if (messageText != null) messageText.gameObject.SetActive(false);
 
         
-        int finalScore = Mathf.RoundToInt(currentTime);
+        int finalScore = Mathf.RoundToInt(playTimer);
 
         string playerName = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "Jugador";
 

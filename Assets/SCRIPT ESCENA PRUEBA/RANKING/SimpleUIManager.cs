@@ -92,9 +92,28 @@ public class SimpleUIManager : MonoBehaviour
 
     public void HandleGameOver(bool won, int finalScore)
     {
-        if (!string.IsNullOrEmpty(currentPlayerName))
-            MyGame.Profiles.SimpleManager.Instance?.AddAttempt(currentPlayerName, finalScore);
+        Debug.Log("[SimpleUIManager] HandleGameOver called. won=" + won + " finalScore=" + finalScore + " currentPlayerName=" + currentPlayerName);
 
+      
+        string playerName = !string.IsNullOrEmpty(currentPlayerName)
+            ? currentPlayerName
+            : (PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "");
+
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            var mgr = MyGame.Profiles.SimpleManager.Instance;
+            if (mgr != null) mgr.AddAttempt(playerName, finalScore);
+            else Debug.LogWarning("[SimpleUIManager] SimpleManager.Instance es null al guardar intento.");
+        }
+        else
+        {
+            Debug.LogWarning("[SimpleUIManager] No se tiene nombre de jugador al guardar intento.");
+        }
+
+        PlayerPrefs.SetInt("LastScore", finalScore);
+        PlayerPrefs.Save();
+
+        
         if (mainPanel != null) mainPanel.SetActive(true);
         if (startSection != null) startSection.SetActive(false);
         if (leaderboardSection != null) leaderboardSection.SetActive(false);
@@ -104,23 +123,21 @@ public class SimpleUIManager : MonoBehaviour
 
         if (gameOverScoreText != null)
         {
-            gameOverScoreText.text = $"Puntaje: {finalScore}";
-            gameOverScoreText.gameObject.SetActive(won);
+            if (won)
+            {
+                gameOverScoreText.gameObject.SetActive(true);
+                gameOverScoreText.text = $"Puntaje: {finalScore}";
+            }
+            else
+            {
+                gameOverScoreText.gameObject.SetActive(false);
+            }
         }
 
-        if (btnViewScore != null)
-            btnViewScore.gameObject.SetActive(won);
+        if (btnViewScore != null) btnViewScore.gameObject.SetActive(won);
+        if (btnPlayAgain != null) btnPlayAgain.gameObject.SetActive(!won);
+        if (btnExitToMainMenu != null) btnExitToMainMenu.gameObject.SetActive(true);
 
-        if (won)
-        {
-            if (btnPlayAgain != null) btnPlayAgain.gameObject.SetActive(false);
-            if (btnExitToMainMenu != null) btnExitToMainMenu.gameObject.SetActive(true);
-        }
-        else
-        {
-            if (btnPlayAgain != null) btnPlayAgain.gameObject.SetActive(true);
-            if (btnExitToMainMenu != null) btnExitToMainMenu.gameObject.SetActive(false);
-        }
     }
 
     public void OnViewScoreClicked()
@@ -142,6 +159,8 @@ public class SimpleUIManager : MonoBehaviour
 
     public void RefreshLeaderboardUI()
     {
+        Debug.Log("[SimpleUIManager] RefreshLeaderboardUI called. currentPlayerName=" + currentPlayerName);
+
         if (leaderboardContent != null)
         {
             foreach (Transform t in leaderboardContent) Destroy(t.gameObject);
@@ -152,25 +171,37 @@ public class SimpleUIManager : MonoBehaviour
         }
 
         var manager = MyGame.Profiles.SimpleManager.Instance;
+        if (manager == null)
+        {
+            Debug.LogError("[SimpleUIManager] SimpleManager.Instance es null. Asegurate de haberlo creado en la escena inicial y que tenga DontDestroyOnLoad.");
+        }
+
         if (manager != null && leaderboardContent != null && rowPrefab != null)
         {
             var list = manager.GetGlobalBestList();
+            Debug.Log("[SimpleUIManager] Global list count = " + (list != null ? list.Count : 0));
             foreach (var item in list)
             {
                 GameObject row = Instantiate(rowPrefab, leaderboardContent);
-            
+
                 var nameTxt = row.transform.Find("TxtName")?.GetComponent<TextMeshProUGUI>();
                 var scoreTxt = row.transform.Find("TxtScore")?.GetComponent<TextMeshProUGUI>();
 
                 if (nameTxt != null) nameTxt.text = item.name;
+                else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtName'.");
+
                 if (scoreTxt != null) scoreTxt.text = item.best.ToString();
+                else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtScore'.");
             }
         }
 
-        if (manager != null && myAttemptsContent != null && attemptRowPrefab != null)
+        string me = !string.IsNullOrEmpty(currentPlayerName) ? currentPlayerName : (PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "");
+        Debug.Log("[SimpleUIManager] RefreshLeaderboardUI -> buscando intentos para: '" + me + "'");
+
+        if (manager != null && myAttemptsContent != null && attemptRowPrefab != null && !string.IsNullOrEmpty(me))
         {
-            string me = currentPlayerName;
             var attempts = manager.GetAttempts(me);
+            Debug.Log("[SimpleUIManager] Attempts count for " + me + " = " + (attempts != null ? attempts.Count : 0));
             for (int i = 0; i < attempts.Count; i++)
             {
                 GameObject r = Instantiate(attemptRowPrefab, myAttemptsContent);
@@ -178,6 +209,12 @@ public class SimpleUIManager : MonoBehaviour
                 if (t != null) t.text = $"Intento {i + 1}: {attempts[i]}";
             }
         }
+
+        else
+        {
+            if (string.IsNullOrEmpty(me)) Debug.LogWarning("[SimpleUIManager] Nombre del jugador vacío; no se mostrarán intentos personales.");
+        }
+
     }
 
 }
