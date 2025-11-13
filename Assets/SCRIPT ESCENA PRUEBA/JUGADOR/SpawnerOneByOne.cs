@@ -37,7 +37,9 @@ public class SpawnerOneByOne : MonoBehaviour
         mainCam = Camera.main;
         if (autoCameraBounds) CalculateBoundsFromCamera();
         StartCoroutine(SpawnLoop());
-    }
+        spawnXMin = -2.6f;
+        spawnXMax = 2.6f;
+}
 
     void CalculateBoundsFromCamera()
     {
