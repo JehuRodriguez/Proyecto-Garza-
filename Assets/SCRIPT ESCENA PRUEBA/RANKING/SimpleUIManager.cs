@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class SimpleUIManager : MonoBehaviour
 {
@@ -142,9 +143,51 @@ public class SimpleUIManager : MonoBehaviour
 
     public void OnViewScoreClicked()
     {
+        StartCoroutine(RefreshLeaderboardUICoroutine());
+    }
+
+
+    private IEnumerator RefreshLeaderboardUICoroutine()
+    {
+        yield return null;
+
+        float wait = 0f;
+        var manager = MyGame.Profiles.SimpleManager.Instance;
+        while (manager == null && wait < 0.5f)
+        {
+            yield return null;
+            wait += Time.deltaTime;
+            manager = MyGame.Profiles.SimpleManager.Instance;
+        }
+
+        if (manager == null)
+        {
+            Debug.LogError("[SimpleUIManager] SimpleManager.Instance sigue siendo NULL después de esperar. Asegúrate de que exista y tenga DontDestroyOnLoad.");
+        }
+
         RefreshLeaderboardUI();
+        if (leaderboardContent != null)
+        {
+            var layout = leaderboardContent.GetComponent<RectTransform>();
+            if (layout != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(layout);
+            }
+        }
+
+        if (myAttemptsContent != null)
+        {
+            var layout2 = myAttemptsContent.GetComponent<RectTransform>();
+            if (layout2 != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(layout2);
+            }
+        }
+
         if (leaderboardSection != null) leaderboardSection.SetActive(true);
         if (gameOverSection != null) gameOverSection.SetActive(false);
+
+        yield break;
     }
 
     public void OnPlayAgainClicked()
@@ -176,23 +219,31 @@ public class SimpleUIManager : MonoBehaviour
             Debug.LogError("[SimpleUIManager] SimpleManager.Instance es null. Asegurate de haberlo creado en la escena inicial y que tenga DontDestroyOnLoad.");
         }
 
-        if (manager != null && leaderboardContent != null && rowPrefab != null)
+        if (leaderboardContent != null && rowPrefab != null)
         {
             var list = manager.GetGlobalBestList();
             Debug.Log("[SimpleUIManager] Global list count = " + (list != null ? list.Count : 0));
-            foreach (var item in list)
+            if (list != null)
             {
-                GameObject row = Instantiate(rowPrefab, leaderboardContent);
+                foreach (var item in list)
+                {
+                    GameObject row = Instantiate(rowPrefab, leaderboardContent);
 
-                var nameTxt = row.transform.Find("TxtName")?.GetComponent<TextMeshProUGUI>();
-                var scoreTxt = row.transform.Find("TxtScore")?.GetComponent<TextMeshProUGUI>();
+                    var nameTxt = row.transform.Find("TxtName")?.GetComponent<TextMeshProUGUI>();
+                    var scoreTxt = row.transform.Find("TxtScore")?.GetComponent<TextMeshProUGUI>();
 
-                if (nameTxt != null) nameTxt.text = item.name;
-                else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtName'.");
+                    if (nameTxt != null) nameTxt.text = item.name;
+                    else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtName' con TextMeshProUGUI.");
 
-                if (scoreTxt != null) scoreTxt.text = item.best.ToString();
-                else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtScore'.");
+                    if (scoreTxt != null) scoreTxt.text = item.best.ToString();
+                    else Debug.LogWarning("[SimpleUIManager] rowPrefab no contiene hijo 'TxtScore' con TextMeshProUGUI.");
+                }
             }
+        }
+        else
+        {
+            if (rowPrefab == null) Debug.LogWarning("[SimpleUIManager] rowPrefab NO asignado en el inspector.");
+            if (leaderboardContent == null) Debug.LogWarning("[SimpleUIManager] leaderboardContent NO asignado en el inspector.");
         }
 
         string me = !string.IsNullOrEmpty(currentPlayerName) ? currentPlayerName : (PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : "");
@@ -202,17 +253,23 @@ public class SimpleUIManager : MonoBehaviour
         {
             var attempts = manager.GetAttempts(me);
             Debug.Log("[SimpleUIManager] Attempts count for " + me + " = " + (attempts != null ? attempts.Count : 0));
-            for (int i = 0; i < attempts.Count; i++)
+            if (attempts != null)
             {
-                GameObject r = Instantiate(attemptRowPrefab, myAttemptsContent);
-                var t = r.GetComponentInChildren<TextMeshProUGUI>();
-                if (t != null) t.text = $"Intento {i + 1}: {attempts[i]}";
+                for (int i = 0; i < attempts.Count; i++)
+                {
+                    GameObject r = Instantiate(attemptRowPrefab, myAttemptsContent);
+                    var t = r.GetComponentInChildren<TextMeshProUGUI>();
+                    if (t != null) t.text = $"Intento {i + 1}: {attempts[i]}";
+                    else Debug.LogWarning("[SimpleUIManager] attemptRowPrefab no tiene TextMeshProUGUI en su hijo.");
+                }
             }
         }
 
         else
         {
             if (string.IsNullOrEmpty(me)) Debug.LogWarning("[SimpleUIManager] Nombre del jugador vacío; no se mostrarán intentos personales.");
+            if (attemptRowPrefab == null) Debug.LogWarning("[SimpleUIManager] attemptRowPrefab NO asignado en el inspector.");
+            if (myAttemptsContent == null) Debug.LogWarning("[SimpleUIManager] myAttemptsContent NO asignado en el inspector.");
         }
 
     }
