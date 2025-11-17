@@ -144,6 +144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  isGood: 1
-  scoreValue: 10
+  isGood: 0
+  scoreValue: 0
   visibleTime: 0.4
