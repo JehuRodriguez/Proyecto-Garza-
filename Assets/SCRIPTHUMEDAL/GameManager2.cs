@@ -82,9 +82,9 @@ public class GameManager2 : MonoBehaviour
     void UpdateHUD()
     {
         Debug.Log("UpdateHUD: scoreText assigned? " + (scoreText != null));
-        if (scoreText) scoreText.text = "Score: " + score;
-        if (livesText) livesText.text = "Lives: " + lives;
-        if (timerText) timerText.text = "Time: " + Mathf.CeilToInt(timeLeft);
+        if (scoreText) scoreText.text = "SCORE: " + score;
+        if (livesText) livesText.text =  lives.ToString();
+        if (timerText) timerText.text =  Mathf.CeilToInt(timeLeft).ToString();
     }
 
     public void OnRoundFinished()
