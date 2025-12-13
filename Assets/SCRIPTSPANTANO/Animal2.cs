@@ -7,6 +7,12 @@ public class Animal2 : MonoBehaviour
     public bool isInvasive;
 
     bool active = true;
+    GameController2 gameController;
+
+    void Start()
+    {
+        gameController = FindObjectOfType<GameController2>();
+    }
 
     public void Hit()
     {
@@ -14,9 +20,9 @@ public class Animal2 : MonoBehaviour
         active = false;
 
         if (isInvasive)
-            GameController2.Instance.AddScore();
-        else
-            GameController2.Instance.LoseLife();
+        {
+            gameController.AddScore(1);
+        }
 
         Destroy(gameObject);
     }

@@ -2,117 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController2 : MonoBehaviour
 {
-    public static GameController2 Instance;
+    public GameObject tutorialPanel;
+    public GameObject pausePanel;
+    public GameObject victoryPanel;
 
     public int score;
-    public int lives = 3;
-    public float gameTime = 30f;
-
-    public TMP_Text scoreText;
-    public TMP_Text timerText;
-    public TMP_Text livesText;
+    public int targetScore = 20;
 
 
-    public GameObject restartButton;
-    public GameObject tutorialPanel;
-    public SimpleSpawner spawner;
+    bool playing;
 
-    float timeLeft;
-    bool playing = false;
-
-
-    void Awake()
-    {
-        Instance = this;
-    }
-    
     void Start()
     {
-        timeLeft = gameTime;
-        UpdateUI();
-        restartButton.SetActive(false);
-
-        if (PlayerPrefs.GetInt("TutorialSeen", 0) == 0)
-        {
-            tutorialPanel.SetActive(true);
-            playing = false;
-        }
-
-        else
-        {
-            StartGame();
-        }
-    }
-
-    void Update()
-    {
-        if (!playing) return;
-
-        timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0)
-        {
-            EndGame();
-        }
-
-        UpdateUI();
-    }
-
-    public void StartGame()
-    {
-        score = 0;
-        lives = 3;
-        timeLeft = gameTime;
-        playing = true;
-        restartButton.SetActive(false);
-        spawner.StartSpawning();
-        UpdateUI();
-    }
-
-    public void AddScore()
-    {
-        score++;
-        UpdateUI();
-    }
-
-    public void LoseLife()
-    {
-        lives--;
-        UpdateUI();
-
-        if (lives <= 0)
-            EndGame();
-    }
-
-    void EndGame()
-    {
-        playing = false;
-        spawner.StopSpawning();
-        restartButton.SetActive(true);
-    }
-
-
-    public void RestartGame()
-    {
-        StartGame();
+        tutorialPanel.SetActive(true);
+        pausePanel.SetActive(false);
+        victoryPanel.SetActive(false);
+        Time.timeScale = 0f;
     }
 
     public void CloseTutorial()
     {
-        PlayerPrefs.SetInt("TutorialSeen", 1);
         tutorialPanel.SetActive(false);
-        StartGame();
+        Time.timeScale = 1f;
+        playing = true;
     }
 
-    void UpdateUI()
+    public void AddScore(int value)
     {
-        scoreText.text = "SCORE: " + score;
-        timerText.text = Mathf.CeilToInt(timeLeft).ToString();
-        livesText.text = lives.ToString();
+        if (!playing) return;
+
+        score += value;
+        if (score >= targetScore)
+        {
+            WinGame();
+        }
     }
 
 
+    void WinGame()
+    {
+        playing = false;
+        Time.timeScale = 0f;
+        victoryPanel.SetActive(true);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        pausePanel.SetActive(true);
+    }
+
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
+    }
+
+    public void LoadMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
 
 }
