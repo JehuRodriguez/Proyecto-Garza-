@@ -93,7 +93,7 @@ public class GameController2 : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MenuInicial");
     }
 
     void UpdateUI()

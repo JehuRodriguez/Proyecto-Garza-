@@ -1100,7 +1100,7 @@ MonoBehaviour:
   playButton: {fileID: 1842752360}
   creditsButton: {fileID: 370290059}
   creditsPanel: {fileID: 763367657}
-  gameSceneName: RITMODEHUMEDAL
+  gameSceneName: PantanoGame
   backgroundMusic: {fileID: 0}
   musicVolume: 0.25
   playMusicOnAwake: 1
