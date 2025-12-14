@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController2 : MonoBehaviour
 {
-    
+    public TMP_Text finalScoreText;
     public GameObject tutorialPanel;
     public GameObject pausePanel;
     public GameObject victoryPanel;
@@ -67,6 +67,10 @@ public class GameController2 : MonoBehaviour
         if (!playing) return;
 
         score += value;
+
+        if (score < 0)
+            score = 0;
+
         UpdateUI();
 
         if (score >= targetScore)
@@ -80,6 +84,9 @@ public class GameController2 : MonoBehaviour
     {
         playing = false;
         Time.timeScale = 0f;
+
+        finalScoreText.text = "PUNTAJE: " + score;
+
         victoryPanel.SetActive(true);
     }
 

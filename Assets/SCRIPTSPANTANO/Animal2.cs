@@ -28,11 +28,11 @@ public class Animal2 : MonoBehaviour
 
         if (isInvasive)
         {
-            gameController.AddScore(1);   
+            gameController.AddScore(-1);   
         }
         else
         {
-            gameController.AddScore(-1);  
+            gameController.AddScore(+1);  
         }
 
         Destroy(gameObject);
