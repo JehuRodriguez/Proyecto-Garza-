@@ -14,6 +14,13 @@ public class GameController2 : MonoBehaviour
     public int targetScore = 20;
 
 
+    public TMP_Text scoreText;
+    public TMP_Text timeText;
+
+    public float gameTime = 30f;
+    float timeLeft;
+
+
     bool playing;
 
     void Start()
@@ -22,6 +29,24 @@ public class GameController2 : MonoBehaviour
         pausePanel.SetActive(false);
         victoryPanel.SetActive(false);
         Time.timeScale = 0f;
+
+        timeLeft = gameTime;
+        UpdateUI();
+    }
+
+    void Update()
+    {
+        if (!playing) return;
+
+        timeLeft -= Time.deltaTime;
+
+        if (timeLeft <= 0)
+        {
+            timeLeft = 0;
+            WinGame(); 
+        }
+
+        UpdateUI();
     }
 
     public void CloseTutorial()
@@ -36,6 +61,8 @@ public class GameController2 : MonoBehaviour
         if (!playing) return;
 
         score += value;
+        UpdateUI();
+
         if (score >= targetScore)
         {
             WinGame();
@@ -67,6 +94,12 @@ public class GameController2 : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    void UpdateUI()
+    {
+        scoreText.text = "Puntaje: " + score;
+        timeText.text = Mathf.CeilToInt(timeLeft).ToString();
     }
 
 }
