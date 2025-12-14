@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SimpleSpawner : MonoBehaviour
 {
+   
     public Hole[] holes;
     public GameObject[] animals;
     public float spawnDelay = 1f;
@@ -25,12 +26,16 @@ public class SimpleSpawner : MonoBehaviour
 
     void Spawn()
     {
-        if (!running) return;
-
         Hole hole = holes[Random.Range(0, holes.Length)];
-        GameObject animal = animals[Random.Range(0, animals.Length)];
 
-        Instantiate(animal, hole.spawnPoint.position, Quaternion.identity);
+        if (hole.occupied) return; 
+
+        GameObject animal = animals[Random.Range(0, animals.Length)];
+        GameObject spawned = Instantiate(animal, hole.spawnPoint.position, Quaternion.identity);
+
+        hole.occupied = true;
+
+        spawned.GetComponent<Animal2>().SetHole(hole);
     }
 
 }

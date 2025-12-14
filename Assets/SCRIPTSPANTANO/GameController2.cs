@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameController2 : MonoBehaviour
 {
+    
     public GameObject tutorialPanel;
     public GameObject pausePanel;
     public GameObject victoryPanel;
+
+    public SimpleSpawner spawner;
+
 
     public int score;
     public int targetScore = 20;
@@ -54,6 +58,8 @@ public class GameController2 : MonoBehaviour
         tutorialPanel.SetActive(false);
         Time.timeScale = 1f;
         playing = true;
+
+        spawner.StartSpawning();
     }
 
     public void AddScore(int value)

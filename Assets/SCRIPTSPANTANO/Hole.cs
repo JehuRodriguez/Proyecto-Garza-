@@ -5,4 +5,5 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     public Transform spawnPoint;
+    public bool occupied;
 }

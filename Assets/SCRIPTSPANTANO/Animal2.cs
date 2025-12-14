@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class Animal2 : MonoBehaviour
 {
-    public bool isInvasive;
+    public bool isInvasive; 
 
     bool active = true;
     GameController2 gameController;
 
+    Hole myHole;
+
     void Start()
     {
         gameController = FindObjectOfType<GameController2>();
+    }
+
+    public void SetHole(Hole hole)
+    {
+        myHole = hole;
     }
 
     public void Hit()
@@ -21,13 +28,19 @@ public class Animal2 : MonoBehaviour
 
         if (isInvasive)
         {
-            gameController.AddScore(1);
+            gameController.AddScore(1);   
+        }
+        else
+        {
+            gameController.AddScore(-1);  
         }
 
         Destroy(gameObject);
     }
 
-
-
-
+    void OnDestroy()
+    {
+        if (myHole != null)
+            myHole.occupied = false;
+    }
 }
